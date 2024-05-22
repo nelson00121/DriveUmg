@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Center</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2; /* Gris claro */
+            margin: 0;
+            padding: 0;
+            color: #333; /* Texto gris oscuro */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff; /* Blanco */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333; /* Texto gris oscuro */
+        }
+
+        .tabs {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3377ff; /* Azul */
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff; /* Texto blanco */
+            margin-right: 10px;
+            transition: background-color 0.3s ease; /* Transición suave */
+        }
+
+        .tab:hover {
+            background-color: #ff3355; /* Rojo al pasar el ratón */
+        }
+
+        .tab.active {
+            background-color: #ff3333; /* Rojo más oscuro para la pestaña activa */
+        }
+
+        .section {
+            padding: 20px;
+            border: 1px solid #3377ff; /* Borde azul */
+            background-color: #fff; /* Blanco */
+            border-radius: 10px; /* Bordes redondeados */
+            display: none; /* Ocultar todas las secciones por defecto */
+        }
+
+        .section.active {
+            display: block; /* Mostrar solo la sección activa */
+        }
+
+        .media-item {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #3377ff; /* Borde azul */
+            border-radius: 5px;
+            background-color: #f9f9f9; /* Gris claro */
+        }
+
+        .media-item img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+
+        .media-item h3 {
+            margin-top: 0;
+            color: #ff3333; /* Rojo */
+        }
+
+        .media-item p {
+            margin-bottom: 0;
+            color: #666; /* Gris */
+        }
+
+        .upload-form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .upload-form input[type="file"] {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Media Center</h1>
+        <p>Bienvenido, {{ username }}</p>
+        <div class="tabs">
+            <div class="tab" onclick="openTab(event, 'videos')">Videos</div>
+            <div class="tab" onclick="openTab(event, 'fotos')">Fotos</div>
+            <div class="tab" onclick="openTab(event, 'documentos')">Documentos</div>
+        </div>
+
+        <div id="videos" class="section">
+            <h2>Videos</h2>
+            <!-- Lista de archivos de videos -->
+            {% for file in files %}
+                {% if file.endswith('.mp4') %}
+                    <div class="media-item">
+                        <video width="320" height="240" controls>
+                            <source src="{{ url_for('uploaded_file', username=username, filename=file) }}" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                        <h3>{{ file }}</h3>
+                        <p>Descripción del video...</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div id="fotos" class="section">
+            <h2>Fotos</h2>
+            <!-- Lista de archivos de fotos -->
+            {% for file in files %}
+                {% if file.endswith('.png') or file.endswith('.jpg') or file.endswith('.jpeg') or file.endswith('.gif') %}
+                    <div class="media-item">
+                        <img src="{{ url_for('uploaded_file', username=username, filename=file) }}" alt="{{ file }}">
+                        <h3>{{ file }}</h3>
+                        <p>Descripción de la foto...</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div id="documentos" class="section">
+            <h2>Documentos</h2>
+            <!-- Lista de archivos de documentos -->
+            {% for file in files %}
+                {% if file.endswith('.txt') or file.endswith('.pdf') %}
+                    <div class="media-item">
+                        <a href="{{ url_for('uploaded_file', username=username, filename=file) }}">{{ file }}</a>
+                        <p>Descripción del documento...</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="upload-form">
+            <form method="post" action="{{ url_for('upload_file') }}" enctype="multipart/form-data">
+                <input type="file" name="file">
+                <input type="submit" value="Subir archivo">
+            </form>
+        </div>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("section");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Mostrar la primera pestaña por defecto
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementsByClassName('tab')[0].click();
+        });
+    </script>
+</body>
+</html>

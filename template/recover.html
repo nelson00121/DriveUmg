@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 300px;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-container input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .form-container input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .form-container textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+        }
+
+        .form-container p {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .form-container .btn-back {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #ccc;
+            color: black;
+            cursor: pointer;
+        }
+
+        .form-container .btn-back:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Recuperar Contraseña</h2>
+        <form action="/recover.html" method="post">
+            <label for="username">Nombre de Usuario:</label>
+            <input type="text" id="username" name="username" required>
+            <input type="submit" value="Recuperar">
+        </form>
+        
+        {% if password %}
+        <div>
+            <h3>Contraseña recuperada:</h3>
+            <textarea rows="4" cols="50">{{ password }}</textarea>
+        </div>
+        {% endif %}
+        
+        {% if error %}
+        <div>
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+        
+        <button class="btn-back" onclick="window.location.href='/login.html'">Volver al Login</button>
+    </div>
+</body>
+</html>

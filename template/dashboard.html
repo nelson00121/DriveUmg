@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Center</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .upload-section {
+            margin-bottom: 30px;
+        }
+
+        .upload-section label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .upload-section input[type="file"],
+        .upload-section select {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .upload-section button {
+            padding: 10px 20px;
+            background-color: #3377ff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .upload-section button:hover {
+            background-color: #ff3355;
+        }
+
+        .file-list {
+            margin-top: 30px;
+        }
+
+        .file-list h2 {
+            margin-bottom: 20px;
+        }
+
+        .file-list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .file-list table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        .file-list th, .file-list td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .file-list th {
+            background-color: #f2f2f2;
+        }
+
+        .file-list td a {
+            color: #3377ff;
+            text-decoration: none;
+        }
+
+        .file-list td a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Media Center</h1>
+        <div class="upload-section">
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <label for="file">Seleccione un archivo para subir:</label>
+                <input type="file" name="file" id="file" required>
+                <label for="file_type">Seleccione el tipo de archivo:</label>
+                <select name="file_type" id="file_type" required>
+                    <option value="video">Video</option>
+                    <option value="foto">Foto</option>
+                    <option value="documento">Documento</option>
+                </select>
+                <button type="submit">Subir</button>
+            </form>
+        </div>
+        <div class="file-list">
+            <h2>Archivos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Fecha de Subida</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for media in media_files %}
+                    <tr>
+                        <td>{{ media.filename }}</td>
+                        <td>{{ media.file_type }}</td>
+                        <td>{{ media.upload_date }}</td>
+                        <td>
+                            <a href="{{ url_for('static', filename=media.filepath) }}" target="_blank">Ver</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
